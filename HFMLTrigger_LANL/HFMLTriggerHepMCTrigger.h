@@ -32,7 +32,7 @@ class HFMLTriggerHepMCTrigger : public SubsysReco
 {
  public:
 //  HFMLTriggerHepMCTrigger(const std::string &moduleName, const std::string &filename, bool IsSignal);
-  HFMLTriggerHepMCTrigger(const std::string &moduleName, const std::string &filename, bool IsSignal, bool IsbbBar);
+  HFMLTriggerHepMCTrigger(const std::string &moduleName, const std::string &filename, bool IsSignal, bool IsbbBar, bool IsForceD0);
 
   int Init(PHCompositeNode *);
   int InitRun(PHCompositeNode *);
@@ -104,6 +104,7 @@ class HFMLTriggerHepMCTrigger : public SubsysReco
   //! negative IDs are backgrounds, .e.g out of time pile up collisions
   //! Usually, ID = 0 means the primary Au+Au collision background
   int _embedding_id;
+  int ParentPDGID;
 
 //  PHHepMCGenEventMap *m_Geneventmap;
   PdbParameterMap *m_Flags;

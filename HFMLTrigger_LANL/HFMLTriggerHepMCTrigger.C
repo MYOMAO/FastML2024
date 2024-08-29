@@ -72,7 +72,8 @@ std::multimap<std::vector<int>, int> decaymap;
 HFMLTriggerHepMCTrigger::HFMLTriggerHepMCTrigger(const std::string& moduleName,
 		const std::string& filename
 		, bool IsccBar
-		, bool IsbbBar)
+		, bool IsbbBar,
+		bool IsForceD0)
 	: SubsysReco(moduleName)
 	, _ievent(0)
 	, m_RejectReturnCode(Fun4AllReturnCodes::ABORTEVENT)
@@ -88,10 +89,10 @@ HFMLTriggerHepMCTrigger::HFMLTriggerHepMCTrigger(const std::string& moduleName,
 	//DoccBar = IsccBar;
 	DobbBar = IsbbBar;
 	DoccBar = IsccBar;
-	ForceD0 = false;
+	ForceD0 = IsForceD0;
 
 	cout << "INSIDE:: DoccBar = " << DoccBar << "   DobbBar = " << DobbBar << endl;
-	
+
 }
 
 int HFMLTriggerHepMCTrigger::Init(PHCompositeNode* topNode)
@@ -164,9 +165,9 @@ int HFMLTriggerHepMCTrigger::InitRun(PHCompositeNode* topNode)
 int HFMLTriggerHepMCTrigger::process_event(PHCompositeNode* topNode)   //Now it becomes HFMLG4TruthInfoTrigger :)
 {
 
-	
+
 	m_truth_info = findNode::getClass<PHG4TruthInfoContainer>(topNode, "G4TruthInfo");
-	
+
 
 
 	bool acceptEvent = false;
@@ -180,23 +181,44 @@ int HFMLTriggerHepMCTrigger::process_event(PHCompositeNode* topNode)   //Now it 
 	unsigned int nD0PiK(0);
 
 	std::vector<int> ParentTrkInfo;
-    std::vector<std::vector<int>> DaughterInfo;
-    std::vector<std::vector<float>> DaughterRapInfo;
-	
+	std::vector<std::vector<int>> DaughterInfo;
+	std::vector<std::vector<float>> DaughterRapInfo;
+
 
 	std::cout << "Pass 1" << std::endl;
 	acceptEvent = false;
-	
+
 
 
 	if(DoccBar && ForceD0){
 
 		acceptEvent = false;
-	
+
 	}else{
-		
+
 		acceptEvent = true;
 	}
+
+	/*
+	   PHG4TruthInfoContainer::ConstRange range = m_truth_info->GetParticleRange();
+	   for (PHG4TruthInfoContainer::ConstIterator iter = range.first;
+	   iter != range.second; ++iter)
+	   {
+
+	   PHG4Particle *g4particle = iter->second;
+	   PDGID = g4particle->get_pid();
+	   if(abs(PDGID) == 421) acceptEvent = true;
+
+	   }
+
+
+
+
+
+
+	   if(acceptEvent) std::cout << "Indeed - This event contains ccbar" << std::endl;
+	   */
+
 
 
 	PHG4TruthInfoContainer::ConstRange range = m_truth_info->GetParticleRange();
@@ -204,21 +226,148 @@ int HFMLTriggerHepMCTrigger::process_event(PHCompositeNode* topNode)   //Now it 
 			iter != range.second; ++iter)
 	{
 
+		//		float ParentE = 0;
+		//		float ParentPx = 0;
+		//		float ParentPy = 0;
+		//		float ParentPz = 0;
+		//float ParenrtPt = 0;
+		int ParentTrkId = 0;
+
+		float E;
+		//		float Px;
+		//		float Py;
+		float Pz;
+		//		float Pt;
+
+		double rapidity;
+
+
 		PHG4Particle *g4particle = iter->second;
+		PHG4Particle *mother = nullptr;
+
 		PDGID = g4particle->get_pid();
-		if(abs(PDGID) == 421) acceptEvent = true;
-		
+		E = g4particle->get_e();
+		//Px = g4particle->get_px();
+		//Py = g4particle->get_py();
+		Pz = g4particle->get_pz();
+
+		rapidity = 0.5 * TMath::Log((E+Pz)/(E-Pz));
+		//		cout << "E = " << E << "   pz = " << Pz << "   rapidity = " << rapidity << endl;
+
+		if (g4particle->get_parent_id() == 0)
+		{
+			ParentPDGID = 0;
+		}
+		else
+		{
+			mother = m_truth_info->GetParticle(g4particle->get_parent_id());
+			ParentPDGID = mother->get_pid();
+
+			//		ParentE = mother->get_e();
+			//		ParentPx = mother->get_px();
+			//		ParentPy = mother->get_py();
+			//		ParentPz = mother->get_pz();
+			ParentTrkId = mother->get_track_id();
+
+		}
+
+		//ParentPt = sqrt(ParentPx * ParentPx + ParentPy * ParentPy);
+
+		int VtxSize = ParentTrkInfo.size();
+		bool NewVtx = true;
+		int Index = -1;
+
+		for (int i = 0; i < VtxSize; i++)
+		{
+			if (ParentTrkId != 0 && ParentTrkId == ParentTrkInfo[i])
+			{
+				NewVtx = false;
+				Index = i;
+			}
+		}
+
+		bool VtxToQA = false;
+		if(DobbBar) VtxToQA = true;
+		if(DoccBar && !ForceD0) VtxToQA = true;
+		if(DoccBar && ForceD0){
+			if(abs(ParentPDGID) == 421) VtxToQA = true;
+		}
+
+		//if (DoccBar && abs(ParentPDGID) == 421) VtxToQA = true;
+
+		//		cout << "PDGID = " << PDGID << "   ParentPDGID = " << ParentPDGID << "   rapidity = " << rapidity << endl;
+
+		if ((ParentTrkId > 0 || abs(PDGID) == abs(ParentPDGID)) && VtxToQA == true){
+			if(PDGID == 22){
+				std::cout << "Extra Radiated Photons, Not count them" << std::endl;
+				continue;
+			}
+			if (NewVtx)
+			{
+				ParentTrkInfo.push_back(ParentTrkId);
+				std::vector<int> Daughters;
+				Daughters.push_back(PDGID);
+				DaughterInfo.push_back(Daughters);
+
+
+
+				std::vector<float> DaughtersRap;
+				DaughtersRap.push_back(rapidity);
+				DaughterRapInfo.push_back(DaughtersRap);
+
+
+				nD0 = nD0 + 1;
+
+			}
+			if (!NewVtx)
+			{
+
+				DaughterInfo[Index].push_back(PDGID);
+				DaughterRapInfo[Index].push_back(rapidity);
+
+			}
+
+		}
+
+
 	}
 
 
 
 
-	if(acceptEvent) std::cout << "Indeed - This event contains ccbar" << std::endl;
+	int VtxSizeFinal = DaughterInfo.size();
 
 
 
+	for (int q = 0; q < VtxSizeFinal; q++){
 
-	
+		sort(DaughterInfo[q].begin(), DaughterInfo[q].end());
+		bool RapAcc = true;
+		int DaughterSize = DaughterInfo[q].size();
+
+
+
+		for(int s = 0; s < DaughterSize; s++){
+
+			if(abs(DaughterRapInfo[q][s]) > 1) RapAcc = false;
+			//	cout << "PDGID =  " << DaughterInfo[q][s] <<  "   rapidity = " << DaughterRapInfo[q][s]  << endl;
+		}
+
+		int key = -1;
+		if (decaymap.find({DaughterInfo[q]}) != decaymap.end()) key = decaymap.find({DaughterInfo[q]})->second;
+		//cout << "key = " << key << "   RapAcc = " << RapAcc << endl;
+		RapAcc = true; //Accept what ever we have //
+		if(key > -1 && RapAcc == true){
+			m_hNorm->Fill("D0->PiK", 1);
+			++nD0PiK;
+			//m_DRapidity->Fill(rapidity, 1);
+			acceptEvent = true;			
+		}
+
+	}
+
+
+
 
 
 
@@ -253,18 +402,18 @@ int HFMLTriggerHepMCTrigger::process_event(PHCompositeNode* topNode)   //Now it 
 
 	}
 
-		
+
 	if (acceptEvent)
 	{
 
 		return Fun4AllReturnCodes::EVENT_OK;
 
-		
+
 	}else{
-	
+
 		return m_RejectReturnCode;
 
-		
+
 	}
 
 }
