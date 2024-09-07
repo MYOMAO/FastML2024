@@ -198,6 +198,7 @@ int HFMLTriggerHepMCTrigger::process_event(PHCompositeNode* topNode)   //Now it 
 
 	}else{
 
+
 		acceptEvent = true;
 	}
 
@@ -289,8 +290,8 @@ int HFMLTriggerHepMCTrigger::process_event(PHCompositeNode* topNode)   //Now it 
 		}
 
 		bool VtxToQA = false;
-		if(DobbBar) VtxToQA = true;
-		if(DoccBar && !ForceD0KPi) VtxToQA = true;
+		if(DobbBar) VtxToQA = false;
+		if(DoccBar && !ForceD0KPi) VtxToQA = false;
 		if(DoccBar && ForceD0KPi){
 			if(abs(ParentPDGID) == 421) VtxToQA = true;
 		}
@@ -348,33 +349,37 @@ int HFMLTriggerHepMCTrigger::process_event(PHCompositeNode* topNode)   //Now it 
 
 
 
-	int VtxSizeFinal = DaughterInfo.size();
+	if(VtxToQA == true){
+
+		int VtxSizeFinal = DaughterInfo.size();
 
 
 
-	for (int q = 0; q < VtxSizeFinal; q++){
+		for (int q = 0; q < VtxSizeFinal; q++){
 
-		sort(DaughterInfo[q].begin(), DaughterInfo[q].end());
-		bool RapAcc = true;
-		int DaughterSize = DaughterInfo[q].size();
+			sort(DaughterInfo[q].begin(), DaughterInfo[q].end());
+			bool RapAcc = true;
+			int DaughterSize = DaughterInfo[q].size();
 
 
 
-		for(int s = 0; s < DaughterSize; s++){
+			for(int s = 0; s < DaughterSize; s++){
 
-			if(abs(DaughterRapInfo[q][s]) > 1) RapAcc = false;
-			//	cout << "PDGID =  " << DaughterInfo[q][s] <<  "   rapidity = " << DaughterRapInfo[q][s]  << endl;
-		}
+				if(abs(DaughterRapInfo[q][s]) > 1) RapAcc = false;
+				//	cout << "PDGID =  " << DaughterInfo[q][s] <<  "   rapidity = " << DaughterRapInfo[q][s]  << endl;
+			}
 
-		int key = -1;
-		if (decaymap.find({DaughterInfo[q]}) != decaymap.end()) key = decaymap.find({DaughterInfo[q]})->second;
-		//cout << "key = " << key << "   RapAcc = " << RapAcc << endl;
-		RapAcc = true; //Accept what ever we have //
-		if(key > -1 && RapAcc == true){
-			m_hNorm->Fill("D0->PiK", 1);
-			++nD0PiK;
-			//m_DRapidity->Fill(rapidity, 1);
-			acceptEvent = true;			
+			int key = -1;
+			if (decaymap.find({DaughterInfo[q]}) != decaymap.end()) key = decaymap.find({DaughterInfo[q]})->second;
+			//cout << "key = " << key << "   RapAcc = " << RapAcc << endl;
+			RapAcc = true; //Accept what ever we have //
+			if(key > -1 && RapAcc == true){
+				m_hNorm->Fill("D0->PiK", 1);
+				++nD0PiK;
+				//m_DRapidity->Fill(rapidity, 1);
+				acceptEvent = true;			
+			}
+
 		}
 
 	}
@@ -383,10 +388,9 @@ int HFMLTriggerHepMCTrigger::process_event(PHCompositeNode* topNode)   //Now it 
 
 
 
-
 	if (nD0 >= 2)
 	{
-		cout <<"HFMLTriggerHepMCTrigger::process_event - D0-Pair with nD0 = "<<nD0  << "   Is that fuckin accepted?  " << acceptEvent <<endl;
+		cout <<"HFMLTriggerHepMCTrigger::process_event - D0-Pair with nD0 = "<<nD0  << "   Is that accepted?  " << acceptEvent <<endl;
 		m_hNorm->Fill("D0-Pair", nD0 * (nD0 - 1) / 2);
 	}
 	if (nD0PiK >= 2)
@@ -396,7 +400,7 @@ int HFMLTriggerHepMCTrigger::process_event(PHCompositeNode* topNode)   //Now it 
 
 
 
-	
+
 
 	assert(m_Flags);
 	m_Flags->set_int_param(Name(), acceptEvent);
