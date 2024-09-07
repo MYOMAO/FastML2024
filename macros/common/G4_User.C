@@ -4,6 +4,7 @@
 #include <fun4all/Fun4AllServer.h>
 #include "/direct/sphenix+tg+tg01/hf/zshi/FastMLUConn/NewBuild/FastMLUConn/HFMLTriggerCodeMB/AntiTrigger/AntiTrigger.h"
 #include "G4_Input.C"
+#include "ForceD0Setting.h"
 
 	R__LOAD_LIBRARY(libfun4all.so)
 	R__LOAD_LIBRARY(libhfmltrigger.so)
@@ -61,11 +62,14 @@ void UserAnalysisInit()
 		se->registerSubsystem(myFinder);
   }
 
-	HFMLTriggerHepMCTrigger * Test = new HFMLTriggerHepMCTrigger("D0toPiKInAcceptance","Test",Enable::ccBarSim,Enable::bbBarSim);
+  bool IsForceD0 = ForceD0;
+  bool IsIncD0 = IncD0;
+
+	HFMLTriggerHepMCTrigger * Test = new HFMLTriggerHepMCTrigger("D0toPiKInAcceptance","Test",Enable::ccBarSim,Enable::bbBarSim,IsForceD0, IncD0);
 	Test->Verbosity(0);
 	se->registerSubsystem(Test);
 
-	HFMLTriggerInterface * Test2 = new HFMLTriggerInterface("bbBarTest");
+	HFMLTriggerInterface * Test2 = new HFMLTriggerInterface("bbbarHFML");
 	Test2->Verbosity(0);
 	std::cout << "Right Before registerSubsystem" << std::endl;
 	se->registerSubsystem(Test2);
