@@ -91,7 +91,7 @@ HFMLTriggerHepMCTrigger::HFMLTriggerHepMCTrigger(const std::string& moduleName,
 	DobbBar = IsbbBar;
 	DoccBar = IsccBar;
 	ForceD0KPi = IsForceD0Ki;
-	IncD0 = isIncD0;
+	IncD0 = IsIncD0;
 
 	cout << "INSIDE:: DoccBar = " << DoccBar << "   DobbBar = " << DobbBar << "   ForceD0KPi: " << ForceD0KPi << "    IncD0: " << IncD0  << endl;
 
