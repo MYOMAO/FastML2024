@@ -34,7 +34,7 @@
 #include <set>
 
 #include "/direct/sphenix+tg+tg01/hf/zshi/FastMLUConn/NewBuild/FastMLUConn/HFMLTriggerCodeMB/AntiTrigger/AntiTrigger.h"
-
+#include "ForceD0Setting.h"
 
 R__LOAD_LIBRARY(libfun4all.so)
 R__LOAD_LIBRARY(libg4testbench.so)
@@ -45,7 +45,7 @@ R__LOAD_LIBRARY(libFermimotionAfterburner.so)
 namespace Enable
 {
   bool ccBarSim = false;
-  bool bbBarSim = false;  
+  bool bbBarSim = true;  
 //  bool SaveHepMC = true;
  
 }
@@ -111,7 +111,8 @@ namespace Input
     {
     case AA_COLLISION:
       // heavy ion mode
-
+   //   HepMCGen->set_vertex_distribution_mean(0.0,0.0,0,0);
+     HepMCGen->set_vertex_distribution_mean(-0.3,0.2,0,0);
       HepMCGen->set_vertex_distribution_width(
           100e-4,         // approximation from past STAR/Run16 AuAu data
           100e-4,         // approximation from past STAR/Run16 AuAu data

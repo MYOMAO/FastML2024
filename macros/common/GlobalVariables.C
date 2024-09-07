@@ -4,6 +4,7 @@
 #include <g4decayer/EDecayType.hh>
 #include <G4_TrkrVariables.C>
 #include <set>
+#include "ForceD0Setting.h"
 
 double no_overlapp = 0.0001;
 
@@ -105,8 +106,10 @@ namespace G4TRACKING
 
 namespace EVTGENDECAYER
 {
-   std::string DecayFile = "D0.KPi.DEC"; //The default is no need to force decay anything and use the default file DECAY.DEC from the official EvtGen software
+   std::string DecayFile = (ForceD0==true)?  "D0.KPi.DEC":""; //The default is no need to force decay anything and use the default file DECAY.DEC from the official EvtGen software
 							   //DECAY.DEC is located at: https://gitlab.cern.ch/evtgen/evtgen/-/blob/master/DECAY.DEC
+//	string file1 =  (Enable::ccBarSim==true)? "/sphenix/user/zshi/FastMLLatest/HFMLTriggerCodes/macros/detectors/sPHENIX/phpythia8_Check.cfg":"/sphenix/user/cdean/public/forZhaozhong/phpythia8.cfg";
+
 }
 
 namespace CDB
