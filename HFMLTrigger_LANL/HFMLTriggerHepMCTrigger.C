@@ -73,7 +73,8 @@ HFMLTriggerHepMCTrigger::HFMLTriggerHepMCTrigger(const std::string& moduleName,
 		const std::string& filename
 		, bool IsccBar
 		, bool IsbbBar,
-		bool IsForceD0)
+		bool IsForceD0Ki,
+		bool IsIncD0)
 	: SubsysReco(moduleName)
 	, _ievent(0)
 	, m_RejectReturnCode(Fun4AllReturnCodes::ABORTEVENT)
@@ -89,9 +90,10 @@ HFMLTriggerHepMCTrigger::HFMLTriggerHepMCTrigger(const std::string& moduleName,
 	//DoccBar = IsccBar;
 	DobbBar = IsbbBar;
 	DoccBar = IsccBar;
-	ForceD0 = IsForceD0;
+	ForceD0KPi = IsForceD0Ki;
+	IncD0 = isIncD0;
 
-	cout << "INSIDE:: DoccBar = " << DoccBar << "   DobbBar = " << DobbBar << endl;
+	cout << "INSIDE:: DoccBar = " << DoccBar << "   DobbBar = " << DobbBar << "   ForceD0KPi: " << ForceD0KPi << "    IncD0: " << IncD0  << endl;
 
 }
 
@@ -190,7 +192,7 @@ int HFMLTriggerHepMCTrigger::process_event(PHCompositeNode* topNode)   //Now it 
 
 
 
-	if(DoccBar && ForceD0){
+	if(DoccBar && ForceD0KPi){
 
 		acceptEvent = false;
 
@@ -288,10 +290,11 @@ int HFMLTriggerHepMCTrigger::process_event(PHCompositeNode* topNode)   //Now it 
 
 		bool VtxToQA = false;
 		if(DobbBar) VtxToQA = true;
-		if(DoccBar && !ForceD0) VtxToQA = true;
-		if(DoccBar && ForceD0){
+		if(DoccBar && !ForceD0KPi) VtxToQA = true;
+		if(DoccBar && ForceD0DPi){
 			if(abs(ParentPDGID) == 421) VtxToQA = true;
 		}
+
 
 		//if (DoccBar && abs(ParentPDGID) == 421) VtxToQA = true;
 
@@ -328,6 +331,16 @@ int HFMLTriggerHepMCTrigger::process_event(PHCompositeNode* topNode)   //Now it 
 			}
 
 		}
+
+
+		if(DoccBar && IncD0){
+			if(abs(PDGID) == 421) acceptEvent = true;
+		}
+
+		if(DoccBar && !IncD0){
+			if(abs(PDGID) == 421) acceptEvent = false;
+		}
+
 
 
 	}
@@ -383,7 +396,7 @@ int HFMLTriggerHepMCTrigger::process_event(PHCompositeNode* topNode)   //Now it 
 
 
 
-
+	
 
 	assert(m_Flags);
 	m_Flags->set_int_param(Name(), acceptEvent);

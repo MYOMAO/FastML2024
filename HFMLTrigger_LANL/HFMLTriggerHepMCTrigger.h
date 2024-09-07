@@ -32,7 +32,7 @@ class HFMLTriggerHepMCTrigger : public SubsysReco
 {
  public:
 //  HFMLTriggerHepMCTrigger(const std::string &moduleName, const std::string &filename, bool IsSignal);
-  HFMLTriggerHepMCTrigger(const std::string &moduleName, const std::string &filename, bool IsSignal, bool IsbbBar, bool IsForceD0);
+  HFMLTriggerHepMCTrigger(const std::string &moduleName, const std::string &filename, bool IsSignal, bool IsbbBar, bool IsForceD0KPi, bool IncD0);
 
   int Init(PHCompositeNode *);
   int InitRun(PHCompositeNode *);
@@ -98,7 +98,8 @@ class HFMLTriggerHepMCTrigger : public SubsysReco
   bool DoccBar;
   bool DobbBar;
   bool DoSaveHepMC;
-  bool ForceD0;
+  bool ForceD0KPi; //For Dantong/CCNU Studies
+  bool IncD0; //For Deepsana Studies
   //! The embedding ID for the HepMC subevent to be analyzed.
   //! positive ID is the embedded event of interest, e.g. jetty event from pythia
   //! negative IDs are backgrounds, .e.g out of time pile up collisions
