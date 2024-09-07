@@ -202,6 +202,17 @@ int HFMLTriggerHepMCTrigger::process_event(PHCompositeNode* topNode)   //Now it 
 		acceptEvent = true;
 	}
 
+
+
+
+	bool VtxToQA = false;
+	if(DobbBar) VtxToQA = false;
+	if(DoccBar && !ForceD0KPi) VtxToQA = false;
+	if(DoccBar && ForceD0KPi){
+		if(abs(ParentPDGID) == 421) VtxToQA = true;
+	
+	}
+
 	/*
 	   PHG4TruthInfoContainer::ConstRange range = m_truth_info->GetParticleRange();
 	   for (PHG4TruthInfoContainer::ConstIterator iter = range.first;
@@ -289,12 +300,6 @@ int HFMLTriggerHepMCTrigger::process_event(PHCompositeNode* topNode)   //Now it 
 			}
 		}
 
-		bool VtxToQA = false;
-		if(DobbBar) VtxToQA = false;
-		if(DoccBar && !ForceD0KPi) VtxToQA = false;
-		if(DoccBar && ForceD0KPi){
-			if(abs(ParentPDGID) == 421) VtxToQA = true;
-		}
 
 
 		//if (DoccBar && abs(ParentPDGID) == 421) VtxToQA = true;
