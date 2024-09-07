@@ -291,7 +291,7 @@ int HFMLTriggerHepMCTrigger::process_event(PHCompositeNode* topNode)   //Now it 
 		bool VtxToQA = false;
 		if(DobbBar) VtxToQA = true;
 		if(DoccBar && !ForceD0KPi) VtxToQA = true;
-		if(DoccBar && ForceD0DKPi){
+		if(DoccBar && ForceD0KPi){
 			if(abs(ParentPDGID) == 421) VtxToQA = true;
 		}
 
