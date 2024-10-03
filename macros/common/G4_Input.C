@@ -33,7 +33,8 @@
 
 #include <set>
 
-#include "/direct/sphenix+tg+tg01/hf/zshi/FastMLUConn/NewBuild/FastMLUConn/HFMLTriggerCodeMB/AntiTrigger/AntiTrigger.h"
+//#include "/direct/sphenix+tg+tg01/hf/zshi/FastMLUConn/NewBuild/FastMLUConn/HFMLTriggerCodeMB/AntiTrigger/AntiTrigger.h"
+#include "../../AntiTrigger/AntiTrigger.h"
 #include "ForceD0Setting.h"
 
 R__LOAD_LIBRARY(libfun4all.so)
@@ -259,8 +260,8 @@ namespace PYTHIA8
 {
 //  string config_file = string(getenv("CALIBRATIONROOT")) + "/Generators/phpythia8.cfg";
   //string config_file = (Enable::signal==true)? "/sphenix/user/cdean/public/forZhaozhong/phpythia8_D02Kpi.cfg":"/sphenix/user/cdean/public/forZhaozhong/phpythia8.cfg";
-	string file1 =  (Enable::ccBarSim==true)? "/sphenix/user/zshi/FastMLLatest/HFMLTriggerCodes/macros/detectors/sPHENIX/phpythia8_Check.cfg":"/sphenix/user/cdean/public/forZhaozhong/phpythia8.cfg";
-	string file2 =  (Enable::bbBarSim==true)? "/sphenix/user/zshi/FastMLLatest/HFMLTriggerCodes/macros/detectors/sPHENIX/pptobbbar.cfg":"/sphenix/user/zshi/FastMLLatest/HFMLTriggerCodes/macros/detectors/sPHENIX/phpythia8_Check.cfg";
+	string file1 =  (Enable::ccBarSim==true)? "ConfigFiles/pptoccbar.cfg":"ConfigFiles/pptoqcd.cfg";
+	string file2 =  (Enable::bbBarSim==true)? "ConfigFiles/pptobbbar.cfg":"ConfigFiles/pptoqcd.cfg";
 	//string file3 =  (Enable::ccBarSim==true)? "/sphenix/user/zshi/FastMLLatest/HFMLTriggerCodes/macros/detectors/sPHENIX/phpythia8_Check.cfg":"/sphenix/user/zshi/FastMLLatest/HFMLTriggerCodes/macros/detectors/sPHENIX/pptobbbar.cfg";
 	
 	

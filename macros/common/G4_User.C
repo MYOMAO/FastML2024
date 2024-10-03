@@ -2,7 +2,9 @@
 #define MACRO_G4USER_C
 
 #include <fun4all/Fun4AllServer.h>
-#include "/direct/sphenix+tg+tg01/hf/zshi/FastMLUConn/NewBuild/FastMLUConn/HFMLTriggerCodeMB/AntiTrigger/AntiTrigger.h"
+//#include "/direct/sphenix+tg+tg01/hf/zshi/FastMLUConn/NewBuild/FastMLUConn/HFMLTriggerCodeMB/AntiTrigger/AntiTrigger.h"
+#include "../../AntiTrigger/AntiTrigger.h"
+
 #include "G4_Input.C"
 #include "ForceD0Setting.h"
 
