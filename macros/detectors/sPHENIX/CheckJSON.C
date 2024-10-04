@@ -38,10 +38,11 @@ int CheckJSON()
 
 		    
 		if (doc.HasParseError()) {
-	
-			cout << "Bad Bro" << endl;
 
-			cout << "Now I delete: " << line << "  bro" << endl;
+			cout << "File: " << line << " IS BAD! Likely Corrupted!" << endl;
+	
+
+			cout << "Now I delete: " << line  << endl;
 
 
 			std::remove(line.c_str()); 
