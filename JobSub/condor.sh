@@ -11,7 +11,9 @@ Executable=RunScript.sh
 # The argument to pass to the executable.
 OutFilePath=/sphenix/tg/tg01/hf/zshi/TestProd
 
-Arguments=10 $(Cluster) $(OutFilePath)
+Events=10
+
+Arguments=$(Events) $(Cluster) $(OutFilePath)
 
 #transfer_input_files=FastSim
 
