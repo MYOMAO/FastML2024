@@ -34,7 +34,7 @@
 #include <set>
 
 //#include "/direct/sphenix+tg+tg01/hf/zshi/FastMLUConn/NewBuild/FastMLUConn/HFMLTriggerCodeMB/AntiTrigger/AntiTrigger.h"
-#include "../../AntiTrigger/AntiTrigger.h"
+#include "../../../../../AntiTrigger/AntiTrigger.h"
 #include "ForceD0Setting.h"
 
 R__LOAD_LIBRARY(libfun4all.so)
