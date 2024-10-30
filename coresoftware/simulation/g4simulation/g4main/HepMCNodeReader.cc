@@ -80,7 +80,7 @@ HepMCNodeReader::HepMCNodeReader(const std::string &name)
   , width_vy(0.0)
   , width_vz(0.0)
 {
-  std::cout << "HepMCNodeReader::HepMCNodeReader -> ZZ Modied -> OKZZRoKC -> Modi2" << std::endl;	
+  std::cout << "HepMCNodeReader::HepMCNodeReader Modified" << std::endl;	
   RandomGenerator = gsl_rng_alloc(gsl_rng_mt19937);
   return;
 }
