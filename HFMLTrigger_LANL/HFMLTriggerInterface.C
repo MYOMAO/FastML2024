@@ -348,18 +348,18 @@ int HFMLTriggerInterface::process_event(PHCompositeNode* topNode)
 
 	assert(m_tGeometry);
 
-	//	cout << "ROCK - Runed bro" << endl;
+
 	// load nodes
 	auto res = load_nodes(topNode);
-	//	cout << "ROCK - Runed bro - Pass 1.2 " << endl;
+
 
 	if (res != Fun4AllReturnCodes::EVENT_OK)
 		return res;
-	//	cout << "ROCK - Runed bro - Pass 1.4 " << endl;
+	
 	/*
 	   PHHepMCGenEvent* genevt = nullptr;
 	   if(m_GenEventMap->get(_embedding_id)) genevt = m_GenEventMap->get(_embedding_id);
-	   if(!genevt) cout << "NO genevt bro" <<endl;
+	   
 	   cout << "Pass 1.9" << endl;
 	   */
 
@@ -465,7 +465,7 @@ int HFMLTriggerInterface::process_event(PHCompositeNode* topNode)
 		}
 		else{
 
-		std::cout << "No SUCK - genevt bro" << std::endl;
+
 		}
 		*/
 	metaTree.AddMember("Layer_Count", _nlayers_maps, alloc);
@@ -577,11 +577,11 @@ int HFMLTriggerInterface::process_event(PHCompositeNode* topNode)
 
 			TrkrHitTruthAssoc::MMap g4hit_map;
 			m_hit_truth_map->getG4Hits(hitsetkey, hitkey, g4hit_map);
-			//	int SUCK = 0;
+
 			if (g4hit_map.size() != 1)
 			{
 				//std::cout << "More than one (" << g4hit_map.size() <<") g4Hit associated to " << hitkey << std::endl;
-				//			SUCK = 1;
+
 			}
 			rapidjson::Value truthHitTree(rapidjson::kArrayType);
 			for (auto truth_iter = g4hit_map.begin(); truth_iter != g4hit_map.end(); ++truth_iter)
@@ -604,7 +604,7 @@ int HFMLTriggerInterface::process_event(PHCompositeNode* topNode)
 				//		std::cout << "MVTXHitTime = " << MVTXHitTime << std::endl; 
 
 				//	if(trkid < 0)// cout << "trkid = " << trkid << "   static_cast<uint64_t>(g4hit_key) =  " <<  static_cast<uint64_t>(g4hit_key) << endl;
-				//	if(SUCK == 1)// cout << "trkid = " << trkid << "   static_cast<uint64_t>(g4hit_key) =  " <<  static_cast<uint64_t>(g4hit_key) << endl;
+				
 				if(trkid < 0 ) NEGED = static_cast<uint64_t>(g4hit_key);
 
 				//	auto hitid =  g4hit->get_hit_id();
@@ -971,7 +971,7 @@ int HFMLTriggerInterface::process_event(PHCompositeNode* topNode)
 
 	//cout << "Pass 6" << endl;
 
-	//	cout << "ZZ Check: INTTHITS = " << INTTHITS << endl;
+	
 
 
 
@@ -1527,14 +1527,14 @@ int HFMLTriggerInterface::End(PHCompositeNode* topNode)
 
 int HFMLTriggerInterface::load_nodes(PHCompositeNode* topNode)
 {
-	//   cout << "Loading Nodes Bro" << endl;
+
 	m_hitsets = findNode::getClass<TrkrHitSetContainer>(topNode, "TRKR_HITSET");
 	if (!m_hitsets)
 	{
 		std::cout << PHWHERE << "ERROR: Can't find node TRKR_HITSET" << std::endl;
 		return Fun4AllReturnCodes::ABORTEVENT;
 	}
-	//    cout << "Loading Nodes Bro - Pass 1" << endl;
+
 
 	m_hit_truth_map = findNode::getClass<TrkrHitTruthAssoc>(topNode, "TRKR_HITTRUTHASSOC");
 	if (!m_hit_truth_map)
@@ -1542,7 +1542,7 @@ int HFMLTriggerInterface::load_nodes(PHCompositeNode* topNode)
 		std::cout << PHWHERE << " unable to find DST node TRKR_HITTRUTHASSOC" << std::endl;
 		return Fun4AllReturnCodes::ABORTEVENT;
 	}
-	//    cout << "Loading Nodes Bro - Pass 2" << endl;
+
 
 	//m_cluster_hit_map = findNode::getClass<TrkrClusterHitAssoc>(topNode, "TRKR_CLUSTERHITASSOC");
 	//if (!m_cluster_hit_map)
@@ -1558,7 +1558,7 @@ int HFMLTriggerInterface::load_nodes(PHCompositeNode* topNode)
 		return Fun4AllReturnCodes::ABORTEVENT;
 	}
 
-	//   cout << "Loading Nodes Bro - Pass 3" << endl;
+
 
 	m_g4hits_intt = findNode::getClass<PHG4HitContainer>(topNode, "G4HIT_INTT");
 	if (!m_g4hits_intt)
@@ -1567,7 +1567,7 @@ int HFMLTriggerInterface::load_nodes(PHCompositeNode* topNode)
 		return Fun4AllReturnCodes::ABORTEVENT;
 	}
 
-	//    cout << "Loading Nodes Bro - Pass 4" << endl;
+	
 	/*
 	   m_GenEventMap = findNode::getClass<PHHepMCGenEventMap>(topNode, "PHHepMCGenEventMap");
 	   if (!m_GenEventMap)

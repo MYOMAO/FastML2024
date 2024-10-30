@@ -94,6 +94,7 @@ HFMLTriggerHepMCTrigger::HFMLTriggerHepMCTrigger(const std::string& moduleName,
 	IncD0 = IsIncD0;
 
 	cout << "INSIDE:: DoccBar = " << DoccBar << "   DobbBar = " << DobbBar << "   ForceD0KPi: " << ForceD0KPi << "    IncD0: " << IncD0  << endl;
+	cout << "IncD0: " << IncD0  << endl;
 
 }
 
@@ -101,7 +102,7 @@ int HFMLTriggerHepMCTrigger::Init(PHCompositeNode* topNode)
 {
 	_ievent = 0;
 
-	cout << "INSIDE SUCK:: DoccBar = " << DoccBar  << endl;
+	cout << "INSIDE: DoccBar = " << DoccBar  << endl;
 
 
 	_f = new TFile((_foutname + string(".root")).c_str(), "RECREATE");
@@ -284,6 +285,10 @@ int HFMLTriggerHepMCTrigger::process_event(PHCompositeNode* topNode)   //Now it 
 			ParentTrkId = mother->get_track_id();
 
 		}
+
+		//if(abs(PDGID) < 600 && abs(PDGID) > 500) std::cout << "B meson identified: PDG ID is " << PDGID << std::endl;
+		//if(abs(ParentPDGID) < 600 && abs(ParentPDGID) > 500) std::cout << "B meson ParentPDGID identified: PDG ID is " << PDGID << "   ParentPDGID: " << ParentPDGID << std::endl;
+		//std::cout << "PDG ID is " << PDGID << "   ParentPDGID: " << ParentPDGID << std::endl;
 
 		//ParentPt = sqrt(ParentPx * ParentPx + ParentPy * ParentPy);
 
