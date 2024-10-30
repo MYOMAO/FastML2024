@@ -1,17 +1,10 @@
 echo "-------------- CHANGING SOFTWARE NOW BRO --------------------"
 
-#source /opt/sphenix/core/bin/sphenix_setup.csh -n ana.270
-#source /cvmfs/sphenix.sdcc.bnl.gov/x8664_sl7/opt/sphenix/core/bin/sphenix_setup.csh -n ana.221
-#source /opt/sphenix/core/bin/sphenix_setup.csh -n ana.200
-
-#source /opt/sphenix/core/bin/sphenix_setup.csh -n 
-
-#source /cvmfs/sphenix.sdcc.bnl.gov/gcc-8.3/opt/sphenix/core/bin/sphenix_setup.csh -n ana.269
 
 
 source /opt/sphenix/core/bin/sphenix_setup.csh -n ana.376
 
-#source /opt/sphenix/core/bin/sphenix_setup.csh -n new
+
 
 rm -r install
 
@@ -25,24 +18,20 @@ set path = ( $MYINSTALL/bin $path )
 echo "Build trackbase_historic"
 
 
-#cd trackbase_historic 
-
-#autogen.sh --prefix=$MYINSTALL
-#make
-#make install
-
-#cd ../
-
 
 echo "-------------- BUILD main ------------------------"
 
-cd HFMLTrigger_LANL
 
-#cd coresoftware/simulation/g4simulation/g4detectors/
+cd coresoftware/simulation/g4simulation/g4main/
+autogen.sh --prefix=$MYINSTALL
+make -j10 install
+cd ../../../../
+
+
+
+cd HFMLTrigger_LANL
 autogen.sh --prefix=$MYINSTALL
 make -j20 install
-#make install
-
 cd ..
 
 
