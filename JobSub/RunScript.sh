@@ -106,7 +106,7 @@ ls bbbarHFML.json
 echo "DONE"
 
 
-mv bbbarHFML.json ${Path}/bbbar_${Name}.jsons
+mv bbbarHFML.json ${Path}/bbbar_${Name}.json
 
 
 
